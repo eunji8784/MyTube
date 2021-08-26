@@ -25,6 +25,7 @@ router.post("/register", (req, res) => {
 
     const user = new User(req.body);
 
+    //mongodb의 save 메소드를 이용해 회원정보 저장.
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({

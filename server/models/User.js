@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = 10; //salt를 만들 때 10자리 salt를 만들어서 비밀번호를 암호화한다.
 const jwt = require('jsonwebtoken');
 const moment = require("moment");
 
@@ -35,10 +35,11 @@ const userSchema = mongoose.Schema({
     }
 })
 
-
+//mongodb에 회원정보를 저장하기 전에 비밀번호를 암호화 시킴.
 userSchema.pre('save', function( next ) {
     var user = this;
     
+    //비밀번호를 변경할 때에만 암호화한다. (안그러면 email이나 다른 정보를 바꿀때에도 비밀번호가 암호화된다.)
     if(user.isModified('password')){    
         // console.log('password changed')
         bcrypt.genSalt(saltRounds, function(err, salt){
