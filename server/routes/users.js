@@ -35,17 +35,19 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+    //데이터베이스에 입력한 email이 있는지 확인.
     User.findOne({ email: req.body.email }, (err, user) => {
         if (!user)
             return res.json({
                 loginSuccess: false,
                 message: "Auth failed, email not found"
             });
-
+        //email 정보가 있다면 비밀번호를 비교해서 같은지 확인한다.
         user.comparePassword(req.body.password, (err, isMatch) => {
             if (!isMatch)
                 return res.json({ loginSuccess: false, message: "Wrong password" });
-
+            
+            //비밀번호까지 맞다면 토큰을 생성한다.
             user.generateToken((err, user) => {
                 if (err) return res.status(400).send(err);
                 res.cookie("w_authExp", user.tokenExp);

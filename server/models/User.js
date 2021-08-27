@@ -51,7 +51,7 @@ userSchema.pre('save', function( next ) {
                 next()
             })
         })
-    } else {
+    } else { //비밀번호가 아닌 다른 정보를 바꿨을 때에는 이 루프를 빠져나간다.
         next()
     }
 });
