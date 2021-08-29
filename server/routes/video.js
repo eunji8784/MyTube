@@ -4,7 +4,7 @@ const multer = require('multer');
 var ffmpeg = require('fluent-ffmpeg');
 
 const { Video } = require("../models/Video");
-const { Subscriber } = require("../models/Subscriber");
+// const { Subscriber } = require("../models/Subscriber");
 const { auth } = require("../middleware/auth");
 
 var storage = multer.diskStorage({
@@ -52,7 +52,7 @@ router.post("/thumbnail", (req, res) => {
     let fileDuration ="";
 
     //비디오 정보 가져오기
-    ffmpeg.ffprobe(req.body.filePath, function(err, metadata){
+    ffmpeg.ffprobe(req.body.url, function(err, metadata){
         console.dir(metadata);
         console.log(metadata.format.duration);
 
@@ -62,14 +62,14 @@ router.post("/thumbnail", (req, res) => {
 
     //썸네일 생성
     // filepath: /uploads 폴더에서 가져온 비디오 파일의 경로
-    ffmpeg(req.body.filePath)
+    ffmpeg(req.body.url)
         .on('filenames', function (filenames) {
             console.log('Will generate ' + filenames.join(', '))
             thumbsFilePath = "uploads/thumbnails/" + filenames[0];
         })
         .on('end', function () {
             console.log('Screenshots taken');
-            return res.json({ success: true, thumbsFilePath: thumbsFilePath, fileDuration: fileDuration})
+            return res.json({ success: true, url: thumbsFilePath, fileDuration: fileDuration})
         })
         .screenshots({
             // Will take screens at 20%, 40%, 60% and 80% of the video
