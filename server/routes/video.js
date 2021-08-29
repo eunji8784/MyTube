@@ -46,9 +46,12 @@ router.post("/uploadfiles", (req, res) => {
 
 router.post("/thumbnail", (req, res) => {
 
+    //썸네일 생성하고 비디오 러닝타임도 가져오기.
+
     let thumbsFilePath ="";
     let fileDuration ="";
 
+    //비디오 정보 가져오기
     ffmpeg.ffprobe(req.body.filePath, function(err, metadata){
         console.dir(metadata);
         console.log(metadata.format.duration);
@@ -57,6 +60,8 @@ router.post("/thumbnail", (req, res) => {
     })
 
 
+    //썸네일 생성
+    // filepath: /uploads 폴더에서 가져온 비디오 파일의 경로
     ffmpeg(req.body.filePath)
         .on('filenames', function (filenames) {
             console.log('Will generate ' + filenames.join(', '))
