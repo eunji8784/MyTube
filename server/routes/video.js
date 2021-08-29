@@ -111,7 +111,7 @@ router.post("/uploadVideo", (req, res) => {
 
 });
 
-
+//비디오 상세 페이지
 router.post("/getVideo", (req, res) => {
 
     Video.findOne({ "_id" : req.body.videoId })
